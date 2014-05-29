@@ -9,7 +9,7 @@ combinations [] = []
 combinations (x:xs) = [(x,y) | y <- xs] ++ combinations xs
 
 
-interactAll :: (a -> [a] -> a) -> [a] -> [a]
+interactAll :: (a -> [a] -> b) -> [a] -> [b]
 interactAll _ [] = []
 interactAll interact (x:xs) = reverse (interactAll' [] x xs [])
    where

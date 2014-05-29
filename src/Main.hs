@@ -9,7 +9,7 @@ main::IO()
 main =
    let deltaTime = 0.01 :: Double
        planets = initPlanets
-       planets' = iterateN 500000 (advanceAll deltaTime) planets
+       planets' = iterateN 500000 (advance deltaTime) planets
    in do
       printf "%.9f\n" $ energy planets
       printf "%.9f\n" $ energy planets'

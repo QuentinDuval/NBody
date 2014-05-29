@@ -36,18 +36,25 @@ potentialEnergy p1 p2 =
 
 
 -- | Advance all planets, one step, based on delta T
-advanceAll :: Double -> [Planet] -> [Planet]
-advanceAll dt = interactAll (advanceOne dt)
+advance :: Double -> [Planet] -> [Planet]
+advance dt planets =
+   let !newSpeeds = interactAll (nextSpeed dt) planets
+   in zipWith (nextPosition dt) planets newSpeeds
+
+
+-- | Compute the next position of a planet
+nextPosition :: Double -> Planet -> SpaceVect -> Planet
+nextPosition dt p newSpeed =
+   let newPosition = position p `plusVect` multiplyConst newSpeed dt
+   in p { position = newPosition, speed = newSpeed }
 
 
 -- | Advance planet, one step, based on delta T
-advanceOne :: Double -> Planet -> [Planet] -> Planet
-advanceOne dt p otherPlanets =
+nextSpeed :: Double -> Planet -> [Planet] -> SpaceVect
+nextSpeed dt p otherPlanets =
    let accelarations = map (accelerationOn p) otherPlanets
        totalAcc = foldl plusVect nullVect accelarations
-       newSpeed = speed p `plusVect` multiplyConst totalAcc dt
-       newPosition = position p `plusVect` multiplyConst newSpeed dt
-   in p { position = newPosition, speed = newSpeed }
+   in speed p `plusVect` multiplyConst totalAcc dt
 
 
 -- | Compute the acceleration of a planet on the other
