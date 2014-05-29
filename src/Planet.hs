@@ -41,13 +41,13 @@ potentialEnergy p1 p2 =
 -- | Advance all planets, one step, based on delta T
 advance :: Double -> [Planet] -> [Planet]
 advance dt planets =
-   let !newSpeeds = interactAll (nextSpeed dt) planets
+   let newSpeeds = interactAll (nextSpeed dt) planets
    in zipWith (nextPosition dt) planets newSpeeds
 
 
 -- | Compute the next position of a planet
 nextPosition :: Double -> Planet -> SpaceVect -> Planet
-nextPosition dt p newSpeed =
+nextPosition dt !p newSpeed =
    let newPosition = position p `plusVect` multiplyConst newSpeed dt
    in p { position = newPosition, speed = newSpeed }
 
