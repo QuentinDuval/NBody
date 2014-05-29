@@ -1,5 +1,7 @@
 module SpaceVect where
 
+import Control.DeepSeq
+
 
 -- | Strictly evaluated space vector
 data SpaceVect = SpaceVect {
@@ -8,6 +10,12 @@ data SpaceVect = SpaceVect {
    z :: {-# UNPACK #-} !Double
 } deriving (Show, Eq);
 
+
+instance NFData SpaceVect where
+   rnf (SpaceVect x y z) = x `deepseq` y `deepseq` z `deepseq` ()
+
+
+-- | Utils functions to manipulate space vectors
 
 nullVect :: SpaceVect
 nullVect = SpaceVect 0 0 0
