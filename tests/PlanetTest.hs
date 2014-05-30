@@ -8,7 +8,7 @@ import SpaceVect
 
 
 -- | Input data of the tests
-
+{-
 star =      Planet (SpaceVect 0 0 0) (SpaceVect 0 0 0) 10
 planet1 =   Planet (SpaceVect 0 0 2) (SpaceVect 1 1 1) 1
 planet2 =   Planet (SpaceVect 4 0 0) (SpaceVect 2 2 2) 2
@@ -55,5 +55,5 @@ testAcceleration :: Bool
 testAcceleration = res1 && res2 where
    res1 = accelerationOn planet1 star == (SpaceVect 0 0 (-10/4))
    res2 = accelerationOn planet2 star == (SpaceVect (-5/8) 0 0)
-
+-}
 
