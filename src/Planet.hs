@@ -22,16 +22,15 @@ energy planets =
 
 -- | Kinetic energy = 1/2 * m * v^2
 kineticEnergy :: Planet -> Double
-kineticEnergy p = 0.5 * mass p * normSquared (speed p) 
+kineticEnergy !p = 0.5 * mass p * normSquared (speed p) 
 
 
 -- | Potential energy = - G * m1 * m2 / r
 potentialEnergy :: Planet -> Planet -> Double
-potentialEnergy p1 p2 =
+potentialEnergy !p1 !p2 =
    let distance = sqrt $ distanceSquared (position p1) (position p2)
-   in if distance > 0
-      then force $ - mass p1 * mass p2 / distance
-      else 0
+   in if position p1 == position p2 then 0
+      else force $ - mass p1 * mass p2 / distance
 
 
 -- | Advance all planets, one step, based on delta T
