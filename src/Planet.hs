@@ -10,10 +10,6 @@ data Planet = Planet {
    position :: {-# UNPACK #-} !SpaceVect,
    speed    :: {-# UNPACK #-} !SpaceVect,
    mass     :: {-# UNPACK #-} !Double }
-   deriving (Show);
-
-instance NFData Planet where
-   rnf (Planet p s m) = p `deepseq` s `deepseq` m `deepseq` ()
 
 
 -- | Computation of the total energy of the system
