@@ -2,6 +2,7 @@ module Main (main) where
 
 import Planet
 import PlanetSystem
+import System.Environment
 import Text.Printf
 
 
@@ -9,9 +10,10 @@ main::IO()
 main =
    let deltaTime = 0.01 :: Double
        planets = initPlanets
-       planets' = iterateN 50000000 (advance deltaTime) planets
    in do
+      n <- getArgs >>= readIO.head
       printf "%.9f\n" $ energy planets
+      let planets' = iterateN n (advance deltaTime) planets
       printf "%.9f\n" $ energy planets'
 
 
