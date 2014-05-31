@@ -64,9 +64,8 @@ advance dt planets = do
 -- | Compute the next position of a planet
 nextPosition :: Double -> Planet -> SpaceVect -> IO ()
 nextPosition dt !p !newSpeed = do
-   pos <- readIORef (position p)
-   writeIORef (position p) $!! pos `plusVect` multiplyConst newSpeed dt
-   writeIORef (speed p)    $!! newSpeed
+   modifyIORef' (position p) (`plusVect` multiplyConst newSpeed dt)
+   writeIORef (speed p) $!! newSpeed
 
 
 -- | Advance planet, one step, based on delta T
