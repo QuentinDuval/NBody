@@ -20,6 +20,7 @@ energy planets = do
    energies <- Prelude.mapM (energyPlanet planets) [0 .. V.length planets - 1]
    return $!! Prelude.sum energies
 
+
 -- | Computation of the energy of a planet in the system
 energyPlanet :: Vector Planet -> Int -> IO Double
 energyPlanet planets i = do
@@ -27,11 +28,13 @@ energyPlanet planets i = do
    potentialE <- potentialEnergy planets i
    return $!! kineticE + potentialE
 
+
 -- | Kinetic energy = 1/2 * m * v^2
 kineticEnergy :: Planet -> IO Double
 kineticEnergy !p = do
    s <- readIORef (speed p)
    return $!! 0.5 * mass p * normSquared s
+
 
 -- | Potential energy of the planet at index i
 potentialEnergy :: Vector Planet -> Int -> IO Double
@@ -39,6 +42,7 @@ potentialEnergy planets i = do
    let ps = V.drop (i+1) planets
    e <- V.mapM (potentialEnergy' $ planets V.! i) ps
    return $!! V.sum e
+
 
 -- | Potential energy between two planets = - G * m1 * m2 / r
 potentialEnergy' :: Planet -> Planet -> IO Double
@@ -67,14 +71,13 @@ nextPosition dt !p !newSpeed = do
 
 -- | Advance planet, one step, based on delta T
 nextSpeed :: Double -> Vector Planet -> Int -> IO SpaceVect
-nextSpeed dt !planets i =
+nextSpeed dt !planets i = do
    let p = planets V.! i
        acc j p' = if j == i then return nullVect else accelerationOn p p'
-   in do
-      accelarations <- V.mapM (uncurry acc) (indexed planets)
-      let totalAcc = V.foldl plusVect nullVect accelarations
-      s <- readIORef (speed p)
-      return $!! s `plusVect` multiplyConst totalAcc dt
+   accelarations <- V.mapM (uncurry acc) (indexed planets)
+   let totalAcc = V.foldl plusVect nullVect accelarations
+   s <- readIORef (speed p)
+   return $!! s `plusVect` multiplyConst totalAcc dt
 
 
 -- | Compute the acceleration of a planet on the other
