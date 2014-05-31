@@ -68,7 +68,7 @@ nextPosition dt !p !newSpeed = do
    writeIORef (speed p) $!! newSpeed
 
 
--- | Advance planet, one step, based on delta T
+-- | Compute the next speed of a planet
 nextSpeed :: Double -> Vector Planet -> Int -> IO SpaceVect
 nextSpeed dt !planets i = do
    let p = planets ! i
