@@ -8,12 +8,11 @@ import Text.Printf
 
 
 main::IO()
-main =
+main = do 
    let deltaTime = 0.01 :: Double
-   in do
-      n <- getArgs >>= readIO.head
-      planets <- initPlanets
-      printf "%.9f\n" =<< energy planets
-      replicateM_ n (advance deltaTime planets)
-      printf "%.9f\n" =<< energy planets
+   n <- getArgs >>= readIO.head
+   planets <- initPlanets
+   printf "%.9f\n" =<< energy planets
+   replicateM_ n (advance deltaTime planets)
+   printf "%.9f\n" =<< energy planets
 

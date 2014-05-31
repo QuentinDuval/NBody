@@ -17,10 +17,15 @@ data Planet = Planet {
 -- | Computation of the total energy of the system
 energy :: Vector Planet -> IO Double
 energy planets = do
-   allKinetic <- V.mapM kineticEnergy planets
-   allPotential <- Prelude.mapM (potentialEnergy planets) [0 .. V.length planets - 1]
-   return $!! V.sum allKinetic + Prelude.sum allPotential
+   energies <- Prelude.mapM (energyPlanet planets) [0 .. V.length planets - 1]
+   return $!! Prelude.sum energies
 
+-- | Computation of the energy of a planet in the system
+energyPlanet :: Vector Planet -> Int -> IO Double
+energyPlanet planets i = do
+   kineticE <- kineticEnergy $ planets V.! i
+   potentialE <- potentialEnergy planets i
+   return $!! kineticE + potentialE
 
 -- | Kinetic energy = 1/2 * m * v^2
 kineticEnergy :: Planet -> IO Double
@@ -28,16 +33,12 @@ kineticEnergy !p = do
    s <- readIORef (speed p)
    return $!! 0.5 * mass p * normSquared s
 
-
 -- | Potential energy of the planet at index i
 potentialEnergy :: Vector Planet -> Int -> IO Double
-potentialEnergy planets i =
-   let p = planets V.! i
-       ps = V.drop (i+1) planets
-   in do
-      e <- V.mapM (potentialEnergy' p) ps
-      return $ V.sum e
-
+potentialEnergy planets i = do
+   let ps = V.drop (i+1) planets
+   e <- V.mapM (potentialEnergy' $ planets V.! i) ps
+   return $!! V.sum e
 
 -- | Potential energy between two planets = - G * m1 * m2 / r
 potentialEnergy' :: Planet -> Planet -> IO Double
