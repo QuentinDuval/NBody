@@ -4,9 +4,7 @@ import Control.DeepSeq
 import Control.Monad
 import Data.IORef
 import Data.Vector as V
-
 import SpaceVect
-import Utils
 
 
 -- | Planet data

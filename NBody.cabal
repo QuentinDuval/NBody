@@ -19,10 +19,8 @@ executable NBody
   other-modules:   
                    Planet,
                    SpaceVect,
-                   Utils,
                    Constants,
                    PlanetSystem,
-                   PlanetTest,
-                   UtilsTest
+                   PlanetTest
   extensions:      BangPatterns
 
