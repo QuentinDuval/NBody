@@ -24,7 +24,7 @@ energy planets = do
 -- | Computation of the energy of a planet in the system
 energyPlanet :: Vector Planet -> Int -> IO Double
 energyPlanet planets i = do
-   kineticE <- kineticEnergy $ planets V.! i
+   kineticE <- kineticEnergy $ planets ! i
    potentialE <- potentialEnergy planets i
    return $!! kineticE + potentialE
 
@@ -72,7 +72,7 @@ nextPosition dt !p !newSpeed = do
 -- | Advance planet, one step, based on delta T
 nextSpeed :: Double -> Vector Planet -> Int -> IO SpaceVect
 nextSpeed dt !planets i = do
-   let p = planets V.! i
+   let p = planets ! i
        acc j p' = if j == i then return nullVect else accelerationOn p p'
    accelarations <- V.mapM (uncurry acc) (indexed planets)
    let totalAcc = V.foldl plusVect nullVect accelarations
