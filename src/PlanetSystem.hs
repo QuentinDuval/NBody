@@ -1,7 +1,7 @@
 module PlanetSystem where
 
 import Data.IORef
-import Data.Vector
+import Data.Vector as V
 import Constants
 import Planet
 import SpaceVect
@@ -11,7 +11,7 @@ import SpaceVect
 
 initPlanets :: IO (Vector Planet)
 initPlanets = do
-   planets <- Data.Vector.sequence $ fromList [jupiter, saturn, uranus, neptune]
+   planets <- V.sequence $ fromList [jupiter, saturn, uranus, neptune]
    sun <- createSun planets
    return $ cons sun planets
 
@@ -25,8 +25,8 @@ createSun :: Vector Planet -> IO Planet
 createSun planets =
    let computeMomentum p = do s <- readIORef (speed p); return $ multiplyConst s (mass p)
    in do
-      allMomentums <- Data.Vector.mapM computeMomentum planets
-      let sumMomentums = Data.Vector.foldl plusVect nullVect allMomentums
+      allMomentums <- V.mapM computeMomentum planets
+      let sumMomentums = V.foldl plusVect nullVect allMomentums
       initPlanet nullVect (multiplyConst sumMomentums (- 1/solarMass)) solarMass
 
 
